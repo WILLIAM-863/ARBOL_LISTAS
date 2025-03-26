@@ -26,18 +26,18 @@ abuela(X, Y) :-
     (madre(Hijo, Nietos); padre(Hijo, Nietos)), 
     member(Y, Nietos),!. 
 
-hijo(X, Y) :- (padre(Y, Hijos), member(X, Hijos), es_hombre(X));
-              (madre(Y, Hijos), member(X, Hijos),!, es_hombre(X)).
+hijo(X, Y) :- (padre(Y, Hijos), member(X, Hijos), es_hombre(X),!);
+              (madre(Y, Hijos), member(X, Hijos), es_hombre(X),!).
 
-hija(X, Y) :- (padre(Y, Hijos), member(X, Hijos), es_mujer(X));
-              (madre(Y, Hijos), member(X, Hijos), es_mujer(X)).
+hija(X, Y) :- (padre(Y, Hijos), member(X, Hijos), es_mujer(X),!);
+              (madre(Y, Hijos), member(X, Hijos), es_mujer(X),!).
 
-hermano(X, Y) :- (madre(_, Hijos), member(X, Hijos), member(Y, Hijos), X \= Y, genero(X, hombre)).
-hermana(X, Y) :- (madre(_, Hijos), member(X, Hijos), member(Y, Hijos), X \= Y, genero(X, mujer)).
+hermano(X, Y) :- (madre(_, Hijos), member(X, Hijos), member(Y, Hijos), X \= Y, es_hombre(X),!).
+hermana(X, Y) :- (madre(_, Hijos), member(X, Hijos), member(Y, Hijos), X \= Y, es_mujer(X),!).
 
-tio(X, Y) :- (hermano(X, A), (hijo(Y, A); hija(Y, A)), genero(X, hombre)).
-tia(X, Y) :- (hermana(X, A), (hijo(Y, A); hija(Y, A)), genero(X, mujer)).
+tio(X, Y) :- (hermano(X, A), (hijo(Y, A); hija(Y, A)), es_hombre(X),!).
+tia(X, Y) :- (hermana(X, A), (hijo(Y, A); hija(Y, A)), es_mujer(X),!).
 
-primos(X, Y) :- ((madre(A, Hijos), member(X, Hijos)); (padre(A, Hijos), member(X, Hijos))),
-                ((madre(B, Hijos), member(Y, Hijos)); (padre(B, Hijos), member(Y, Hijos))),
-                hermanos(A, B).
+primos(X, Y) :- ((madre(A, Hijos), member(X, Hijos),!); (padre(A, Hijos), member(X, Hijos))),
+                ((madre(B, Hijos), member(Y, Hijos),!); (padre(B, Hijos), member(Y, Hijos))),
+                (hermano(A, B);hermana(A, B)).
