@@ -11,7 +11,7 @@ genero(mujeres, [mona, jackeline, marge, patty, selma, lisa, maggie, ling]).
 genero(hombres, [abraham, herbert, homero, clancy, bart]).
 
 
-% Reglas 
+% Reglas para verificar parentesco  
 
 es_mujer(X) :- genero(mujeres, Lista), member(X, Lista).
 es_hombre(X) :- genero(hombres, Lista), member(X, Lista).
