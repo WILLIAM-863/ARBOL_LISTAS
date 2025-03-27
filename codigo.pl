@@ -38,6 +38,24 @@ hermana(X, Y) :- (madre(_, Hijos), member(X, Hijos), member(Y, Hijos), X \= Y, e
 tio(X, Y) :- (hermano(X, A), (hijo(Y, A); hija(Y, A)), es_hombre(X),!).
 tia(X, Y) :- (hermana(X, A), (hijo(Y, A); hija(Y, A)), es_mujer(X),!).
 
-primos(X, Y) :- ((madre(A, Hijos), member(X, Hijos),!); (padre(A, Hijos), member(X, Hijos))),
-                ((madre(B, Hijos), member(Y, Hijos),!); (padre(B, Hijos), member(Y, Hijos))),
-                (hermano(A, B);hermana(A, B)).
+
+% validar si X y Y son primos - 
+% se puede hacer consulta con primos, pero presenta un false al final ya que vuelve a recorrer la lista,
+% no se puede usar el controlador por que necesitramos la función para validar lista_primos.   
+primos(X, Y) :-
+    
+(madre(ParentX, HijosX), member(X, HijosX), A = ParentX;
+ padre(ParentX, HijosX), member(X, HijosX), A = ParentX),
+    
+   
+(madre(ParentY, HijosY), member(Y, HijosY), B = ParentY;
+padre(ParentY, HijosY), member(Y, HijosY), B = ParentY),
+    
+% Asegurar que no X y Y sean hermanos
+X \= Y,
+    
+% Verificar que los padres sean hermanos
+(hermano(A, B); hermana(A, B)).
+
+lista_primos(X, ListaPrimos) :-
+    findall(P, primos(X, P), ListaPrimos).
